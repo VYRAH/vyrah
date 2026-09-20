@@ -11,7 +11,10 @@ logs/
 *.log
 .claude-replay.*
 .tmp-*
-.figma/
+.figma/*
+!.figma/
+!.figma/make/
+!.figma/make/site.json
 AGENTS.md
 CLAUDE.md
 .mise.toml

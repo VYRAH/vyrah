@@ -1,0 +1,10 @@
+{
+  "description": "Explore inner self-awareness and authenticity through a unique platform offering guided experiences, symbolic tools, and personal reflection.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
