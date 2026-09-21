@@ -190,36 +190,39 @@ function Nav({
   </div>
 
   {/* Mobile Toggle */}
-  <button
-    className="md:hidden flex flex-col gap-1.5 p-2"
-    onClick={() => setMenuOpen(!menuOpen)}
-  >
-    <span
-      className="block w-6 h-px transition-all"
-      style={{
-        background: "#B4975A",
-        transform: menuOpen
-          ? "rotate(45deg) translate(2px, 2px)"
-          : "none",
-      }}
-    />
-    <span
-      className="block w-6 h-px transition-all"
-      style={{
-        background: "#B4975A",
-        opacity: menuOpen ? 0 : 1,
-      }}
-    />
-    <span
-      className="block w-6 h-px transition-all"
-      style={{
-        background: "#B4975A",
-        transform: menuOpen
-          ? "rotate(-45deg) translate(2px, 2px)"
-          : "none",
-      }}
-    />
-  </button>
+<button
+  type="button"
+  aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
+  className="md:hidden relative w-10 h-10 p-2"
+  onClick={() => setMenuOpen(!menuOpen)}
+>
+  <span
+    className="absolute left-2 top-1/2 block w-6 h-px transition-transform duration-300"
+    style={{
+      background: "#B4975A",
+      transformOrigin: "center",
+      transform: menuOpen ? "rotate(45deg)" : "translateY(-4px)",
+    }}
+  />
+
+  <span
+    className="absolute left-2 top-1/2 block w-6 h-px transition-opacity duration-200"
+    style={{
+      background: "#B4975A",
+      opacity: menuOpen ? 0 : 1,
+      transform: "translateY(0)",
+    }}
+  />
+
+  <span
+    className="absolute left-2 top-1/2 block w-6 h-px transition-transform duration-300"
+    style={{
+      background: "#B4975A",
+      transformOrigin: "center",
+      transform: menuOpen ? "rotate(-45deg)" : "translateY(4px)",
+    }}
+  />
+</button>
 </div>
 
       {/* Mobile Menu */}
@@ -340,52 +343,57 @@ function Footer({ navigate }: { navigate: (p: Page) => void }) {
             </div>
           </div>
 
-          {/* Navigation */}
-          <div>
-            <p className="section-label mb-6">Navigazione</p>
+         {/* Navigation + More */}
+<div className="grid grid-cols-2 gap-8 md:contents">
+  
+  {/* Navigation */}
+  <div>
+    <p className="section-label mb-6">Navigazione</p>
 
-            <div className="flex flex-col gap-3">
-              {[
-                ["Percorso Vyrah", "vyrah"],
-                ["Esperienze", "esperienze"],
-                ["Il Metodo", "metodo"],
-                ["Il Percorso", "percorso"],
-                ["Eventi", "eventi"],
-                ["Chi Sono", "chi-sono"],
-              ].map(([label, page]) => (
-                <button
-                  key={page}
-                  className="nav-link text-left"
-                  onClick={() => navigate(page as Page)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
+    <div className="flex flex-col gap-3">
+      {[
+        ["Vyrah", "vyrah"],
+        ["Esperienze", "esperienze"],
+        ["Il Metodo", "metodo"],
+        ["Il Percorso", "percorso"],
+        ["Eventi", "eventi"],
+        ["Chi Sono", "chi-sono"],
+      ].map(([label, page]) => (
+        <button
+          key={page}
+          className="nav-link text-left"
+          onClick={() => navigate(page as Page)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  </div>
 
-          {/* More */}
-          <div>
-            <p className="section-label mb-6">Altro</p>
+  {/* More */}
+  <div>
+    <p className="section-label mb-6">Altro</p>
 
-            <div className="flex flex-col gap-3">
-              {[
-                ["Archivio", "archivio"],
-                ["Negozio", "negozio"],
-                ["Voci", "voci"],
-                ["Credere", "credere"],
-                ["Contatti", "contatti"],
-              ].map(([label, page]) => (
-                <button
-                  key={page}
-                  className="nav-link text-left"
-                  onClick={() => navigate(page as Page)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
+    <div className="flex flex-col gap-3">
+      {[
+        ["Archivio", "archivio"],
+        ["Negozio", "negozio"],
+        ["Voci", "voci"],
+        ["Credere", "credere"],
+        ["Contatti", "contatti"],
+      ].map(([label, page]) => (
+        <button
+          key={page}
+          className="nav-link text-left"
+          onClick={() => navigate(page as Page)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+</div>
         </div>
 
         <GoldSeparator />
@@ -3151,7 +3159,7 @@ function PagePercorso({ navigate }: { navigate: (p: Page) => void }) {
         "Possibilità",
       ],
       outcome:
-        "Una prospettiva diversa sulla situazione che stai vivendo e la possibilità di vedere elementi che dalla posizione abituale rimanevano fuori campo.",
+        "La possibilità di cambiare prospettiva sulla situazione che stai vivendo e vedere con maggiore chiarezza quello che prima restava difficile da riconoscere.",
     },
   ]
 
@@ -4418,222 +4426,629 @@ function PagePercorso({ navigate }: { navigate: (p: Page) => void }) {
         </div>
       </section>
 
-      {/* PANEL ARCANO */}
+     {/* =========================================================
+    PANEL ARCANO
+========================================================= */}
+{selectedArcano && (
+  <div
+    className="fixed inset-0 z-[100] flex justify-end"
+    style={{
+      background: "rgba(5,4,3,0.72)",
+      backdropFilter: "blur(5px)",
+    }}
+    onClick={() => setSelectedArcano(null)}
+  >
+    <aside
+      className="relative w-full md:w-[680px] h-full overflow-y-auto"
+      style={{
+        background:
+          "linear-gradient(145deg, #15100D 0%, #0B0908 100%)",
+        borderLeft:
+          "1px solid rgba(180,151,90,0.22)",
+        boxShadow:
+          "-20px 0 80px rgba(0,0,0,0.45)",
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* CHIUDI */}
+      <button
+        type="button"
+        onClick={() => setSelectedArcano(null)}
+        className="absolute top-6 right-6 z-20 w-10 h-10 flex items-center justify-center"
+        style={{
+          color: "#E8DDCA",
+          background: "rgba(232,221,202,0.06)",
+          border: "1px solid rgba(180,151,90,0.18)",
+          cursor: "pointer",
+        }}
+        aria-label="Chiudi"
+      >
+        ×
+      </button>
 
-      {selectedArcano && (
-        <div
-          className="fixed inset-0 z-[100] flex justify-end"
+      {/* =====================================================
+          APERTURA
+      ===================================================== */}
+      <div className="relative min-h-[430px] flex items-end overflow-hidden">
+        <img
+          src={selectedArcano.image}
+          alt={selectedArcano.title}
+          className="absolute inset-0 w-full h-full object-contain opacity-35"
           style={{
-            background: "rgba(5,4,3,0.72)",
-            backdropFilter: "blur(5px)",
+            filter: "sepia(0.1) saturate(0.8)",
           }}
-          onClick={() => setSelectedArcano(null)}
-        >
-          <aside
-            className="relative w-full md:w-[680px] h-full overflow-y-auto"
-            style={{
-              background:
-                "linear-gradient(145deg, #15100D 0%, #0B0908 100%)",
-              borderLeft:
-                "1px solid rgba(180,151,90,0.22)",
-              boxShadow:
-                "-20px 0 80px rgba(0,0,0,0.45)",
-            }}
-            onClick={(e) => e.stopPropagation()}
+        />
+
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, #0B0908 3%, rgba(11,9,8,0.82) 45%, rgba(11,9,8,0.18) 100%)",
+          }}
+        />
+
+        <div className="relative z-10 p-8 md:p-12 w-full">
+          <p className="section-label mb-5">
+            Arcano {selectedArcano.num}
+          </p>
+
+          <h2
+            className="display-heading text-4xl md:text-5xl mb-6"
+            style={{ color: "#D0B875" }}
           >
-            <button
-              type="button"
-              onClick={() => setSelectedArcano(null)}
-              className="absolute top-6 right-6 z-10 w-10 h-10 flex items-center justify-center"
-              style={{
-                color: "#E8DDCA",
-                background:
-                  "rgba(232,221,202,0.06)",
-                border:
-                  "1px solid rgba(180,151,90,0.18)",
-                cursor: "pointer",
-              }}
-              aria-label="Chiudi"
-            >
-              ×
-            </button>
+            {selectedArcano.title}
+          </h2>
 
-            <div className="relative min-h-[420px] flex items-end overflow-hidden">
-              <img
-                src={selectedArcano.image}
-                alt={selectedArcano.title}
-                className="absolute inset-0 w-full h-full object-contain opacity-35"
-                style={{
-                  filter: "sepia(0.1) saturate(0.8)",
-                }}
-              />
+          <p
+            className="font-cormorant text-2xl italic max-w-[560px]"
+            style={{
+              color: "#E8DDCA",
+              lineHeight: 1.4,
+            }}
+          >
+            {selectedArcano.question}
+          </p>
+        </div>
+      </div>
 
+      {/* =====================================================
+          CONTENUTO
+      ===================================================== */}
+      <div className="px-8 md:px-12 pb-16">
+
+        {/* SPIEGAZIONE DELLA DOMANDA */}
+        <div className="pt-2">
+          <p
+            className="font-cormorant text-lg md:text-xl"
+            style={{
+              color: "#E8DDCA88",
+              lineHeight: 1.7,
+            }}
+          >
+            {selectedArcano.intro}
+          </p>
+        </div>
+
+        <GoldSeparator />
+
+        {/* ===================================================
+            DA DOVE POSSIAMO PARTIRE
+        =================================================== */}
+        <section>
+          <p className="section-label mb-8">
+            Da dove possiamo partire
+          </p>
+
+          <div>
+            {selectedArcano.observations.map((item, index) => (
               <div
-                className="absolute inset-0"
+                key={item.title}
+                className="py-7"
                 style={{
-                  background:
-                    "linear-gradient(to top, #0B0908 3%, rgba(11,9,8,0.82) 45%, rgba(11,9,8,0.18) 100%)",
-                }}
-              />
-
-              <div className="relative z-10 p-8 md:p-12 w-full">
-                <p className="section-label mb-5">
-                  Arcano {selectedArcano.num}
-                </p>
-
-                <h2
-                  className="display-heading text-4xl md:text-5xl mb-6"
-                  style={{ color: "#D0B875" }}
-                >
-                  {selectedArcano.title}
-                </h2>
-
-                <p
-                  className="font-cormorant text-2xl italic"
-                  style={{
-                    color: "#E8DDCA",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {selectedArcano.question}
-                </p>
-              </div>
-            </div>
-
-            <div className="px-8 md:px-12 pb-16">
-              <p
-                className="font-cormorant text-xl"
-                style={{
-                  color: "#E8DDCA99",
-                  lineHeight: 1.75,
+                  borderTop:
+                    "1px solid rgba(180,151,90,0.13)",
                 }}
               >
-                {selectedArcano.intro}
-              </p>
+                <div className="grid grid-cols-[auto_1fr] gap-6">
+                  <span
+                    className="font-cinzel text-xs pt-1"
+                    style={{ color: "#B4975A" }}
+                  >
+                    {["I", "II", "III", "IV"][index]}
+                  </span>
 
-              <GoldSeparator />
+                  <div>
+                    <h3
+                      className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                      style={{ color: "#D0B875" }}
+                    >
+                      {item.title}
+                    </h3>
 
-              <p className="section-label mb-7">
-                Cosa osserviamo
-              </p>
-
-              <div className="space-y-0">
-                {selectedArcano.observations.map(
-                  (item, index) => (
-                    <div
-                      key={item.title}
-                      className="py-6"
+                    <p
+                      className="font-cormorant text-lg md:text-xl"
                       style={{
-                        borderTop:
-                          "1px solid rgba(180,151,90,0.13)",
+                        color: "#E8DDCA88",
+                        lineHeight: 1.65,
                       }}
                     >
-                      <div className="flex gap-5">
-                        <span
-                          className="font-cinzel text-xs pt-1"
-                          style={{ color: "#B4975A" }}
-                        >
-                          0{index + 1}
-                        </span>
-
-                        <div>
-                          <h3
-                            className="font-cinzel text-sm tracking-[0.12em] uppercase mb-2"
-                            style={{ color: "#D0B875" }}
-                          >
-                            {item.title}
-                          </h3>
-
-                          <p
-                            className="font-cormorant text-lg"
-                            style={{
-                              color: "#E8DDCA77",
-                              lineHeight: 1.6,
-                            }}
-                          >
-                            {item.text}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ),
-                )}
-              </div>
-
-              <div className="mt-12">
-                <p className="section-label mb-7">
-                  Il movimento
-                </p>
-
-                <div className="space-y-0">
-                  {selectedArcano.movement.map(
-                    (step, index) => (
-                      <div
-                        key={step}
-                        className="flex items-center gap-5 py-4"
-                        style={{
-                          borderTop:
-                            "1px solid rgba(180,151,90,0.10)",
-                        }}
-                      >
-                        <span
-                          className="font-cinzel text-xs"
-                          style={{ color: "#B4975A" }}
-                        >
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-
-                        <span
-                          className="font-cormorant text-xl"
-                          style={{ color: "#E8DDCA" }}
-                        >
-                          {step}
-                        </span>
-                      </div>
-                    ),
-                  )}
+                      {item.text}
+                    </p>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </section>
 
-              <div
-                className="mt-12 p-7 md:p-8"
-                style={{
-                  background: "#5A1E2218",
-                  border:
-                    "1px solid rgba(180,151,90,0.16)",
-                }}
-              >
-                <p className="section-label mb-5">
-                  Cosa può emergere
-                </p>
+        {/* ===================================================
+            COME POSSIAMO ESPLORARLO
+        =================================================== */}
+        <section className="mt-14">
+          <p className="section-label mb-8">
+            Come possiamo esplorarlo
+          </p>
 
-                <p
-                  className="font-cormorant text-xl italic"
+          <div
+            className="space-y-0"
+            style={{
+              borderTop:
+                "1px solid rgba(180,151,90,0.18)",
+            }}
+          >
+            {selectedArcano.title === "Il Mago" && (
+              <>
+                <div
+                  className="py-7"
                   style={{
-                    color: "#E8DDCA",
-                    lineHeight: 1.65,
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
                   }}
                 >
-                  {selectedArcano.outcome}
-                </p>
-              </div>
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Chirologia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per osservare le qualità, le inclinazioni e le
+                    risorse che sono già presenti in te e comprendere
+                    come tendi naturalmente a esprimerle.
+                  </p>
+                </div>
 
-              <div className="mt-12">
-                <button
-                  type="button"
-                  className="cta-primary w-full"
-                  onClick={() => {
-                    setSelectedArcano(null)
-                    navigate("contatti")
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
                   }}
                 >
-                  Prenota una lettura
-                </button>
-              </div>
-            </div>
-          </aside>
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Tarocchi
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per interrogare in modo mirato gli ostacoli che
+                    impediscono alle tue possibilità di diventare
+                    azione e portare alla luce dinamiche che continuano
+                    a ripetersi.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Radiestesia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per fermarti sulla tua percezione e dare spazio a
+                    quello che senti quando riconosci il tuo potenziale
+                    ma continui a non riuscire a metterlo in gioco.
+                  </p>
+                </div>
+
+                <div className="py-7">
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Numerologia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per riconoscere tendenze, punti di forza ed energie
+                    che possono aiutarti a comprendere meglio il tuo
+                    modo di essere e ad assecondare il tuo potenziale.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {selectedArcano.title === "L'Eremita" && (
+              <>
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Numerologia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per riconoscere temi ricorrenti, tendenze personali
+                    e il momento che stai attraversando, creando un
+                    primo spazio di orientamento dentro la tua ricerca.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Tarocchi
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per distinguere desideri, condizionamenti e
+                    possibilità e interrogare quello che realmente
+                    chiede di essere ascoltato.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Interpretazione dei sogni
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per lasciare emergere immagini, emozioni e associazioni e ascoltare, attraverso il linguaggio del sogno, quello che dentro di te chiede di essere visto.
+                  </p>
+                </div>
+
+                <div className="py-7">
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Radiestesia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per rallentare il rumore delle risposte esterne,
+                    fermarti e ascoltare la tua percezione davanti a
+                    quello che stai vivendo.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {selectedArcano.title === "L'Innamorato" && (
+              <>
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Tarocchi
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per esplorare conflitti, dinamiche relazionali e
+                    possibilità presenti nella situazione e portare
+                    alla luce quello che rende difficile scegliere.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Chirologia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per osservare inclinazioni e modalità personali
+                    nell'espressione del desiderio, del legame e del
+                    rapporto con l'altro.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Radiestesia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per ascoltare la tua risposta percettiva davanti
+                    alle diverse possibilità e lasciare emergere
+                    quello che senti prima di cercare una spiegazione.
+                  </p>
+                </div>
+
+                <div className="py-7">
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Numerologia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per riconoscere tendenze e schemi che possono
+                    influenzare il modo in cui vivi le relazioni,
+                    desideri e scelte.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {selectedArcano.title === "L'Appeso" && (
+              <>
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Tarocchi
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per provare a guardare la situazione da
+                    prospettive che normalmente non consideri e
+                    interrogare quello che rimane invisibile quando
+                    osservi sempre le cose nello stesso modo.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Interpretazione dei sogni
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Come esercizio personale per lasciare emergere
+                    immagini e significati senza cercare subito di
+                    ricondurli a una spiegazione già conosciuta.
+                  </p>
+                </div>
+
+                <div
+                  className="py-7"
+                  style={{
+                    borderBottom:
+                      "1px solid rgba(180,151,90,0.10)",
+                  }}
+                >
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Radiestesia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per fermarti e ascoltare quello che percepisci
+                    prima di reagire, creando uno spazio in cui
+                    comprendere cosa sta realmente accadendo dentro di
+                    te e da dove può nascere un'azione diversa.
+                  </p>
+                </div>
+
+                <div className="py-7">
+                  <h3
+                    className="font-cinzel text-sm tracking-[0.12em] uppercase mb-3"
+                    style={{ color: "#D0B875" }}
+                  >
+                    Numerologia
+                  </h3>
+                  <p
+                    className="font-cormorant text-lg md:text-xl"
+                    style={{
+                      color: "#E8DDCA99",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    Per riconoscere le tue tendenze, comprendere cosa orienta il tuo modo di reagire e leggere le energie del momento per capire quando è tempo di agire e quando, invece, fermarti a guardare diversamente.
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+
+        {/* ===================================================
+            COSA PUÒ RIAFFIORARE
+        =================================================== */}
+        <section
+          className="mt-14 pt-8"
+          style={{
+            borderTop:
+              "1px solid rgba(180,151,90,0.18)",
+          }}
+        >
+          <p className="section-label mb-5">
+            Cosa può riaffiorare
+          </p>
+
+          <p
+            className="font-cormorant text-xl md:text-2xl italic"
+            style={{
+              color: "#E8DDCA",
+              lineHeight: 1.65,
+            }}
+          >
+            {selectedArcano.outcome}
+          </p>
+        </section>
+
+        {/* ===================================================
+            CTA
+        =================================================== */}
+        <div className="mt-12">
+          <button
+            type="button"
+            className="cta-primary w-full"
+            onClick={() => {
+              setSelectedArcano(null)
+              navigate("contatti")
+            }}
+          >
+            Inizia il percorso
+          </button>
         </div>
-      )}
+      </div>
+    </aside>
+  </div>
+)}
     </div>
   )
 }
@@ -9710,7 +10125,7 @@ function PageContatti() {
               }
               className="cta-primary"
             >
-              PRENOTA UN INCONTRO →
+              PRENOTA UN'ESPERIENZA →
             </button>
 
           </div>
