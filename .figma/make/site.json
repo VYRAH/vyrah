@@ -1,7 +1,9 @@
 {
-  "description": "Explore inner self-awareness and authenticity through a unique platform offering guided experiences, symbolic tools, and personal reflection.",
+  "title": "VYRAH — Ricerca interiore e conoscenza di sé",
+  "description": "Ricerca interiore, conoscenza di sé e costruzione di una vita più coerente con la propria natura.",
+  "language": "it",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
