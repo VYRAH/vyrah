@@ -5728,6 +5728,8 @@ function PageEsperienze({ navigate }: { navigate: (p: Page) => void }) {
 // ─── Page: EVENTI ─────────────────────────────────────────────────────────────
 function PageEventi({ navigate }: { navigate: (p: Page) => void }) {
   const [pastEventIndex, setPastEventIndex] = useState(3)
+  const [pastEventTransition, setPastEventTransition] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
 
   const events = [
     {
@@ -5776,22 +5778,36 @@ function PageEventi({ navigate }: { navigate: (p: Page) => void }) {
   ]
 
   const scrollPastEvents = (direction: "left" | "right") => {
-    setPastEventIndex((current) => {
-      if (direction === "right") {
-        return current + 1
-      }
+  setPastEventTransition(true)
 
-      return current - 1
-    })
-  }
+  setPastEventIndex((current) => {
+    if (direction === "right") {
+      return current + 1
+    }
+
+    return current - 1
+  })
+}
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPastEventIndex((current) => current + 1)
-    }, 4000)
+  const interval = setInterval(() => {
+    setPastEventTransition(true)
+    setPastEventIndex((current) => current + 1)
+  }, 4000)
 
-    return () => clearInterval(interval)
-  }, [])
+  return () => clearInterval(interval)
+}, [])
+
+useEffect(() => {
+  const checkMobile = () => {
+    setIsMobile(window.innerWidth < 768)
+  }
+
+  checkMobile()
+  window.addEventListener("resize", checkMobile)
+
+  return () => window.removeEventListener("resize", checkMobile)
+}, [])
 
   return (
     <div>
@@ -5956,16 +5972,20 @@ function PageEventi({ navigate }: { navigate: (p: Page) => void }) {
   className="flex"
   style={{
     width: "300%",
-    transform: `translateX(-${pastEventIndex * 11.111111}%)`,
-    transition: "transform 700ms ease",
+    transform: `translateX(-${pastEventIndex * (isMobile ? 33.333333 : 11.111111)}%)`,    transition: pastEventTransition
+      ? "transform 700ms ease"
+      : "none",
   }}
   onTransitionEnd={() => {
-    if (pastEventIndex >= 6) {
+    if (pastEventIndex >= 6 || pastEventIndex <= 0) {
+      setPastEventTransition(false)
       setPastEventIndex(3)
-    }
 
-    if (pastEventIndex <= 0) {
-      setPastEventIndex(3)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setPastEventTransition(true)
+        })
+      })
     }
   }}
 >
